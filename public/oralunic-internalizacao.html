@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internalização Oral Unic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#231020;--body:#4a3d47;--wine:#4A0E4E;--purple-d:#540247;--purple-m:#7E0E70;
+  --teal:#2ABCB5;--teal-d:#1f938d;--amber:#B45309;--paper:#FBF9F9;--paper-2:#F3EEF2;
+  --line:#e3d9e1;--line-2:#d4c6d2;--white:#fff;
+  --shadow:0 1px 2px rgba(35,16,32,.04),0 8px 30px rgba(35,16,32,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--body);font-family:'Inter',system-ui,sans-serif;font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;color:var(--ink);line-height:1.14;margin:0;font-weight:600;letter-spacing:-.01em}
+p{margin:0 0 1em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+.shell{display:grid;grid-template-columns:264px 1fr;max-width:1360px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:38px 26px 40px;border-right:1px solid var(--line);background:var(--paper)}
+nav.toc .brand{font-family:'Space Grotesk';font-weight:700;font-size:15px;letter-spacing:.1em;color:var(--purple-d);text-transform:uppercase}
+nav.toc .brand span{color:var(--teal-d)}
+nav.toc .doclabel{font-size:12px;color:var(--body);margin-top:6px}
+nav.toc ol{list-style:none;margin:26px 0 0;padding:0}
+nav.toc li{margin:2px 0}
+nav.toc a{display:flex;gap:9px;padding:6px 10px;border-radius:8px;font-size:13px;color:var(--body);font-weight:500;transition:background .15s,color .15s;align-items:baseline}
+nav.toc a .n{font-family:'Space Mono';font-size:10.5px;color:var(--teal-d);min-width:22px}
+nav.toc a:hover{background:var(--paper-2);color:var(--ink)}
+nav.toc a.active{background:var(--purple-d);color:#fff}
+nav.toc a.active .n{color:var(--teal)}
+main{min-width:0;padding-bottom:80px}
+
+.hero{position:relative;overflow:hidden;color:#fff;
+  background:
+    radial-gradient(1100px 500px at 88% -10%,rgba(42,188,181,.30),transparent 60%),
+    radial-gradient(700px 500px at 8% 120%,rgba(126,14,112,.55),transparent 60%),
+    linear-gradient(150deg,var(--wine),var(--purple-d) 62%,#2c0129);
+  padding:70px 0 62px}
+.hero .wrap{position:relative;z-index:2}
+.hero .eyebrow{font-family:'Space Mono';font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:22px}
+.hero h1{color:#fff;font-size:clamp(34px,5vw,56px);font-weight:700;max-width:17ch;letter-spacing:-.02em}
+.hero .lede{font-size:clamp(16px,2vw,20px);color:#ecdff0;max-width:64ch;margin-top:22px;line-height:1.5}
+.hero .meta{display:flex;flex-wrap:wrap;gap:26px;margin-top:34px;font-size:12.5px;color:#d8c4dd;font-family:'Space Mono'}
+.hero .meta b{color:#fff;font-weight:400}
+.anchor-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px}
+.anchor{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:22px 22px 20px}
+.anchor .big{font-family:'Space Grotesk';font-weight:700;font-size:clamp(26px,3.4vw,38px);color:#fff;letter-spacing:-.02em;line-height:1}
+.anchor .big small{font-size:.5em;font-weight:500;color:var(--teal)}
+.anchor .cap{font-size:12.5px;color:#e4d3e8;margin-top:12px;line-height:1.4}
+.grid-tex{position:absolute;inset:0;z-index:1;opacity:.5;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(700px 400px at 80% 0%,#000,transparent 75%)}
+
+section{padding:56px 0 8px;scroll-margin-top:12px}
+.sec-head{display:flex;gap:18px;align-items:baseline;margin-bottom:26px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.sec-head .num{font-family:'Space Mono';font-size:14px;color:var(--teal-d);font-weight:700;padding-top:6px}
+.sec-head h2{font-size:clamp(23px,3vw,31px);font-weight:700}
+.sec-head .kick{font-size:14px;color:var(--body);margin-top:8px;max-width:76ch}
+.lead-p{font-size:17px;color:var(--ink);max-width:78ch;line-height:1.6}
+
+.card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+.cardgrid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+.eyebrow-s{font-family:'Space Mono';font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--purple-m);font-weight:700}
+h3.blk{font-size:19px;margin:2px 0 10px;font-weight:600}
+h4.blk{font-size:15.5px;margin:0 0 6px;font-weight:600;color:var(--purple-d)}
+.muted{color:var(--body);font-size:14.5px}
+ul.clean{margin:10px 0 0;padding:0;list-style:none}
+ul.clean li{position:relative;padding:5px 0 5px 22px;font-size:14px;line-height:1.5}
+ul.clean li::before{content:"";position:absolute;left:2px;top:12px;width:7px;height:7px;border-radius:2px;background:var(--teal);transform:rotate(45deg)}
+ul.clean.p li::before{background:var(--purple-m)}
+.est{color:var(--amber);font-style:italic}
+.src{font-family:'Space Mono';font-size:11px;color:#8a7d87;letter-spacing:.02em;margin-top:8px;display:block}
+.tag{display:inline-block;font-family:'Space Mono';font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:20px;font-weight:700;vertical-align:middle}
+.tag.now{background:#e7f6f4;color:var(--teal-d)}
+.tag.build{background:#fbe9d6;color:var(--amber)}
+.tag.ext{background:#efe3ee;color:var(--purple-m)}
+
+.callout{border-radius:14px;padding:20px 22px;margin:22px 0;border-left:4px solid;font-size:14.5px}
+.callout .lbl{font-family:'Space Grotesk';font-weight:700;font-size:13px;letter-spacing:.03em;text-transform:uppercase;display:block;margin-bottom:7px}
+.callout.risk{background:#fdeee6;border-color:var(--amber)}.callout.risk .lbl{color:var(--amber)}
+.callout.key{background:#eafaf8;border-color:var(--teal)}.callout.key .lbl{color:var(--teal-d)}
+.callout.gov{background:#f3ecf2;border-color:var(--purple-m)}.callout.gov .lbl{color:var(--purple-m)}
+
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+thead th{background:var(--purple-d);color:#fff;text-align:left;padding:10px 11px;font-family:'Space Grotesk';font-weight:600;font-size:11.5px;letter-spacing:.01em}
+thead th:first-child{border-radius:10px 0 0 0}thead th:last-child{border-radius:0 10px 0 0}
+tbody td{padding:10px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even){background:#faf6f9}
+tbody tr:last-child td{border-bottom:none}
+td .cell-h{font-weight:600;color:var(--ink)}
+.tc{text-align:center}
+.pos{color:var(--teal-d);font-weight:600}
+.neg{color:var(--amber);font-weight:600}
+tfoot td{padding:10px 11px;font-weight:600;color:var(--ink);background:#f0e9ef;font-size:13px}
+
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:10px}
+.phase{position:relative;padding:20px 16px 22px;border:1px solid var(--line);border-right:none;background:var(--white)}
+.phase:first-child{border-radius:14px 0 0 14px}
+.phase:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
+.phase .pn{font-family:'Space Mono';font-size:11px;color:var(--teal-d);font-weight:700}
+.phase h4{font-size:15px;margin:8px 0 8px;color:var(--purple-d)}
+.phase p{font-size:12.5px;line-height:1.45;color:var(--body);margin:0}
+.phase .bar{height:4px;border-radius:3px;margin-bottom:14px}
+.phase .u{font-family:'Space Mono';font-size:11px;color:var(--ink);margin-top:8px;display:block}
+.phase:nth-child(1) .bar{background:var(--teal)}
+.phase:nth-child(2) .bar{background:var(--teal-d)}
+.phase:nth-child(3) .bar{background:var(--purple-m)}
+.phase:nth-child(4) .bar{background:var(--purple-d)}
+.phase.done::after{content:"em curso";position:absolute;top:12px;right:12px;font-family:'Space Mono';font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-d);background:#e7f6f4;padding:2px 7px;border-radius:20px}
+
+.horizons{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
+.hz{border-radius:16px;padding:24px 22px;color:#fff;position:relative;overflow:hidden;min-height:200px;display:flex;flex-direction:column}
+.hz1{background:linear-gradient(160deg,#2ABCB5,#1f938d)}
+.hz2{background:linear-gradient(160deg,#7E0E70,#540247)}
+.hz3{background:linear-gradient(160deg,#4A0E4E,#2c0129)}
+.hz .step{font-family:'Space Mono';font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+.hz h3{color:#fff;font-size:20px;margin:10px 0 10px}
+.hz p{font-size:13.5px;line-height:1.5;opacity:.95;margin:0}
+.hz .foot{margin-top:auto;padding-top:16px;font-family:'Space Mono';font-size:12px;opacity:.9}
+
+.frente{border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:8px}
+.frente .fhead{padding:20px 24px;color:#fff}
+.frente.a .fhead{background:linear-gradient(120deg,#540247,#7E0E70)}
+.frente.b .fhead{background:linear-gradient(120deg,#1f938d,#2ABCB5)}
+.frente .fhead .fk{font-family:'Space Mono';font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.frente .fhead h3{color:#fff;font-size:20px;margin:2px 0 0}
+.frente .fbody{padding:24px}
+
+.state3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.state{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fbf7fa}
+.state h4{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.state .metrics{margin-top:10px;font-size:13px;color:var(--body)}
+.state .metrics b{color:var(--ink)}
+
+.pipe{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:12px}
+.pstep{position:relative;padding:16px 12px;border:1px solid var(--line);border-right:none;background:#fff;text-align:center}
+.pstep:first-child{border-radius:12px 0 0 12px}
+.pstep:last-child{border-right:1px solid var(--line);border-radius:0 12px 12px 0}
+.pstep .pi{font-family:'Space Mono';font-size:10px;color:var(--teal-d);font-weight:700}
+.pstep h4{font-size:13.5px;margin:6px 0 4px;color:var(--purple-d)}
+.pstep p{font-size:11px;margin:0;color:var(--body);line-height:1.35}
+.pstep::after{content:"›";position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:var(--teal);font-size:20px;z-index:2;font-weight:700}
+.pstep:last-child::after{display:none}
+
+.stackgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px}
+.stk{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff}
+.stk .sl{font-family:'Space Mono';font-size:10.5px;color:var(--purple-m);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.stk h4{font-size:14.5px;margin:5px 0 4px}
+.stk p{font-size:12.5px;margin:0;color:var(--body);line-height:1.4}
+
+.road{position:relative;margin-top:12px;padding-left:8px}
+.road::before{content:"";position:absolute;left:18px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--teal),var(--purple-d))}
+.rstep{position:relative;padding:0 0 26px 52px}
+.rstep .rdot{position:absolute;left:11px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--teal)}
+.rstep:nth-child(n+3) .rdot{border-color:var(--purple-m)}
+.rstep:last-child .rdot{border-color:var(--purple-d)}
+.rstep .rlabel{font-family:'Space Mono';font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-d);font-weight:700}
+.rstep h4{font-size:16px;margin:4px 0 6px}
+.rstep p{font-size:14px;margin:0;color:var(--body)}
+.rstep .gate{display:inline-block;margin-top:8px;font-family:'Space Mono';font-size:11.5px;color:var(--amber);background:#fbe9d6;padding:3px 10px;border-radius:6px}
+
+.mit{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+.mcard{border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:#fff}
+.mcard .mn{font-family:'Space Mono';font-size:12px;color:var(--teal-d);font-weight:700}
+.mcard h4{font-size:15.5px;margin:6px 0 6px}
+.mcard p{font-size:13.5px;margin:0;color:var(--body)}
+
+.curvebox{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:center;margin-top:10px}
+@media(max-width:960px){.curvebox{grid-template-columns:1fr}}
+
+/* funil adesão */
+.adfun{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:12px}
+.adf{position:relative;padding:16px 14px;border:1px solid var(--line);border-right:none;background:#fbf7fa;text-align:center}
+.adf:first-child{border-radius:12px 0 0 12px}
+.adf:last-child{border-right:1px solid var(--line);border-radius:0 12px 12px 0;background:#eafaf8}
+.adf .ai{font-family:'Space Mono';font-size:10px;color:var(--purple-m);font-weight:700}
+.adf h4{font-size:13.5px;margin:6px 0 4px}
+.adf p{font-size:11.5px;margin:0;color:var(--body);line-height:1.35}
+.adf::after{content:"→";position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--purple-m);font-weight:700;z-index:2}
+.adf:last-child::after{display:none}
+
+footer{background:var(--purple-d);color:#e9dcea;margin-top:70px;padding:40px 0}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center}
+footer .brand{font-family:'Space Grotesk';font-weight:700;letter-spacing:.12em;color:#fff}
+footer .small{font-family:'Space Mono';font-size:11.5px;color:#c8b3ca}
+
+@media(max-width:980px){
+  .shell{grid-template-columns:1fr}
+  nav.toc{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line)}
+  nav.toc ol{display:flex;flex-wrap:wrap;gap:4px;margin-top:16px}
+  .anchor-row,.horizons,.phases,.state3,.pipe,.g2,.g3,.mit,.stackgrid,.adfun{grid-template-columns:1fr}
+  .phase{border-right:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+  .pstep,.adf{border-right:1px solid var(--line);border-radius:12px;margin-bottom:20px}
+  .pstep::after,.adf::after{right:50%;top:auto;bottom:-16px;transform:translateX(50%) rotate(90deg)}
+  table{font-size:11.5px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media print{nav.toc{display:none}.shell{display:block}.hero{padding:40px 0}section{padding:24px 0;break-inside:avoid}.card,.callout,.frente,.phase,.mcard,.pstep,.stk,.adf{break-inside:avoid}}
+</style>
+<style>/*LOVABLE_HIDE_SCROLLBARS*/html,body,*{scrollbar-width:none!important;-ms-overflow-style:none!important}html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}</style></head>
+<body>
+<div class="shell">
+  <nav class="toc">
+    <div class="brand">Oral<span>Unic</span></div>
+    <div class="doclabel">Internalização · Documento estratégico · Julho 2026</div>
+    <ol>
+      <li><a href="#s1"><span class="n">1.0</span> A dimensão do projeto</a></li>
+      <li><a href="#s2"><span class="n">2.0</span> A tese de escala</a></li>
+      <li><a href="#s3"><span class="n">3.0</span> As duas frentes</a></li>
+      <li><a href="#s4"><span class="n">4.0</span> A plataforma de IA</a></li>
+      <li><a href="#s5"><span class="n">5.0</span> Tecnologia de escala</a></li>
+      <li><a href="#s6"><span class="n">6.0</span> Capacidade, receita e custo</a></li>
+      <li><a href="#s7"><span class="n">7.0</span> Funil de adesão da rede</a></li>
+      <li><a href="#s8"><span class="n">8.0</span> Projeto de lançamento</a></li>
+      <li><a href="#s9"><span class="n">9.0</span> Receita e produto</a></li>
+      <li><a href="#s10"><span class="n">10.0</span> Risco de rede e mitigação</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="grid-tex"></div>
+      <div class="wrap">
+        <div class="eyebrow">Oral Unic · Growth · Internalização</div>
+        <h1>Internalização da geração de paciente da rede</h1>
+        <p class="lede">Trazer para dentro a mídia e o agendamento das unidades, colocar o WhatsApp inteiro sob uma IA de atendimento própria com o time humano na voz, e transformar a operação em uma plataforma de geração de paciente vendável para a odontologia.</p>
+        <div class="meta">
+          <span>Preparado por <b>Gerência de Growth</b></span>
+          <span>Destino <b>Diretoria</b></span>
+          <span>Projeto <b>Oral Unic</b></span>
+        </div>
+        <div class="anchor-row">
+          <div class="anchor">
+            <div class="big">8<small> unidades</small></div>
+            <div class="cap">já internalizadas hoje, ponto de partida comprovado do projeto</div>
+          </div>
+          <div class="anchor">
+            <div class="big">300<small>+</small></div>
+            <div class="cap">unidades na rede, destino da internalização completa</div>
+          </div>
+          <div class="anchor">
+            <div class="big">R$260<small>k</small></div>
+            <div class="cap">faturamento médio por unidade ao mês, base do valor de cada ponto de agendamento</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+
+    <!-- 1. DIMENSÃO -->
+    <section id="s1">
+      <div class="sec-head">
+        <div class="num">1.0</div>
+        <div>
+          <h2>A dimensão do projeto</h2>
+          <div class="kick">A internalização não é uma troca de fornecedor. É a construção de um ativo proprietário de geração de paciente, com três horizontes de valor encadeados.</div>
+        </div>
+      </div>
+
+      <p class="lead-p">Hoje a rede compra tráfego e atendimento de agências independentes, sem padrão de mensuração e sem retorno de dados. Cada unidade resolve sozinha um problema que é o mesmo para as 300. O projeto já internalizou 8 unidades e comprovou o modelo. Escalar concentra esse problema em uma operação única, o que permite padronizar a qualidade, medir o resultado por unidade e acumular a inteligência que nenhuma agência isolada consegue formar.</p>
+
+      <div class="horizons">
+        <div class="hz hz1">
+          <div class="step">Horizonte 1</div>
+          <h3>Operação interna</h3>
+          <p>Gestão de mídia e agendamento das unidades já internalizadas, rodando dentro de casa. Gera os primeiros resultados mensuráveis e valida o modelo, o que já está em curso.</p>
+          <div class="foot">Substituição de custo de agência</div>
+        </div>
+        <div class="hz hz2">
+          <div class="step">Horizonte 2</div>
+          <h3>Serviço para a rede</h3>
+          <p>Oferta estruturada de gestão de mídia e agendamento para os 300+ franqueados, com fee mensal e, na sequência, cobrança por lead qualificado entregue.</p>
+          <div class="foot">Receita recorrente da rede</div>
+        </div>
+        <div class="hz hz3">
+          <div class="step">Horizonte 3</div>
+          <h3>Produto vendável</h3>
+          <p>Plataforma de agendamento e geração de paciente ofertada a clínicas fora da rede, sem exigência de ser Oral Unic. A camada de dados da rede é a barreira de entrada.</p>
+          <div class="foot">Novo modelo de negócio</div>
+        </div>
+      </div>
+
+      <div class="callout key">
+        <span class="lbl">Por que isso é grande</span>
+        Com faturamento médio de R$260k por unidade ao mês <span class="src">fonte: manual da marca Oral Unic (Notion)</span> cada ponto percentual de agendamento recuperado na rede representa receita relevante e recorrente. O ativo final não é o número de unidades atendidas, e sim a inteligência de geração de paciente segmentada por região, porte e formato de clínica, que se torna defensável quando roda em escala.
+      </div>
+    </section>
+
+    <!-- 2. TESE -->
+    <section id="s2">
+      <div class="sec-head">
+        <div class="num">2.0</div>
+        <div>
+          <h2>A tese de escala: capacidade, não headcount</h2>
+          <div class="kick">Escalar a operação aumentando pessoas na mesma proporção que as unidades reproduz o custo das agências dentro de casa. O caminho é a IA absorver todo o WhatsApp enquanto o time humano concentra na voz, na exceção da clínica e no relacionamento.</div>
+        </div>
+      </div>
+
+      <div class="curvebox">
+        <div>
+          <p class="lead-p">O modelo atual usa 1 pessoa de agendamento para cada 2 unidades <span class="src">fonte: operação atual, jul/2026</span> o que exigiria cerca de 150 pessoas só de agendamento para cobrir a rede. O custo cresceria em linha com as unidades e a margem do serviço desapareceria. A internalização desacopla capacidade de headcount: a IA cobre 100% do WhatsApp, o time humano liga para quem não respondeu, e a exceção volta para o atendimento da própria clínica.</p>
+          <p class="muted">Essa lógica segue três atributos de organizações exponenciais aplicáveis ao caso: capacidade puxada por demanda em vez de headcount fixo, operações codificadas em automação auditável, e uso de ativos com custo proporcional ao uso.<span class="src">referencial: Organizações Exponenciais (Ismail, Malone e Geest, 2019)</span> A Seção 6 quantifica a curva por fase, com receita e custo.</p>
+        </div>
+        <div class="card" style="padding:20px">
+          <div class="eyebrow-s">Pessoas de agendamento por unidade</div>
+          <svg viewBox="0 0 420 240" width="100%" height="auto" role="img" aria-label="Queda da razão de pessoas por unidade conforme a IA assume o WhatsApp">
+            <defs><linearGradient id="gcap" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#2ABCB5"/><stop offset="1" stop-color="#7E0E70"/></linearGradient></defs>
+            <line x1="46" y1="200" x2="404" y2="200" stroke="#d4c6d2" stroke-width="1.5"/>
+            <line x1="46" y1="24" x2="46" y2="200" stroke="#d4c6d2" stroke-width="1.5"/>
+            <text x="46" y="222" font-family="Space Mono" font-size="10" fill="#8a7d87">8 un.</text>
+            <text x="358" y="222" font-family="Space Mono" font-size="10" fill="#8a7d87">300+ un.</text>
+            <text x="8" y="30" font-family="Space Mono" font-size="10" fill="#8a7d87">pessoas</text>
+            <path d="M46 190 L404 30" fill="none" stroke="#B45309" stroke-width="2.5" stroke-dasharray="6 5"/>
+            <text x="270" y="58" font-family="Space Grotesk" font-size="11" font-weight="600" fill="#B45309">modelo atual 1:2 (~150 pessoas)</text>
+            <path d="M46 188 C150 158 250 146 404 132" fill="none" stroke="url(#gcap)" stroke-width="3.5"/>
+            <text x="230" y="166" font-family="Space Grotesk" font-size="11" font-weight="600" fill="#1f938d">IA no WhatsApp + voz humana (~25)</text>
+          </svg>
+          <p class="muted" style="margin:10px 0 0;font-size:12.5px">Leitura conceitual da tese. Os números estão na Seção 6, com premissas marcadas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. DUAS FRENTES -->
+    <section id="s3">
+      <div class="sec-head">
+        <div class="num">3.0</div>
+        <div>
+          <h2>As duas frentes da internalização</h2>
+          <div class="kick">O projeto avança em duas frentes com dependência entre si. A primeira traz a mídia. A segunda traz o atendimento e o agendamento, hoje fragmentados em um fornecedor de IA externo, um call center e uma célula interna.</div>
+        </div>
+      </div>
+
+      <!-- FRENTE A -->
+      <div class="frente a">
+        <div class="fhead">
+          <div class="fk">Frente A</div>
+          <h3>Mídia e tráfego · saída das agências</h3>
+        </div>
+        <div class="fbody">
+          <p class="muted" style="margin-top:0">Sequenciamento de risco controlado. A Fase 1 já está concluída com as 8 unidades internalizadas, e as fases seguintes ampliam até a rede completa.</p>
+          <div class="phases">
+            <div class="phase done">
+              <div class="bar"></div>
+              <div class="pn">FASE 1</div>
+              <h4>Unidades próprias e críticas</h4>
+              <p>Internalização executada e validada. API de conversão e novo padrão de cadastro implementados. Primeiros casos mensuráveis da rede.</p>
+              <span class="u">8 unidades</span>
+            </div>
+            <div class="phase">
+              <div class="bar"></div>
+              <div class="pn">FASE 2</div>
+              <h4>Expansão inicial</h4>
+              <p>Ampliação para unidades de baixo engajamento e adesão de franqueados a partir dos casos da Fase 1.</p>
+              <span class="u">~30 unidades <span class="est">meta</span></span>
+            </div>
+            <div class="phase">
+              <div class="bar"></div>
+              <div class="pn">FASE 3</div>
+              <h4>Escala</h4>
+              <p>Adesão em volume com a IA já cobrindo todo o WhatsApp e o time humano concentrado na voz.</p>
+              <span class="u">~100 unidades <span class="est">meta</span></span>
+            </div>
+            <div class="phase">
+              <div class="bar"></div>
+              <div class="pn">FASE 4</div>
+              <h4>Rede completa</h4>
+              <p>Cobertura de toda a rede, com a IA como padrão de atendimento e evolução do fee para lead broker.</p>
+              <span class="u">300+ unidades</span>
+            </div>
+          </div>
+
+          <h3 class="blk" style="margin-top:26px">Os dois gargalos que a frente resolve</h3>
+          <div class="cardgrid g2">
+            <div class="card">
+              <span class="tag ext">Gargalo de sinal</span>
+              <h4 class="blk" style="margin-top:10px">O sistema não sabe qual anúncio gerou o paciente</h4>
+              <p class="muted">Sem API de conversão e rastreamento no servidor, a otimização trabalha às cegas.</p>
+              <ul class="clean p"><li>API de conversão ativa e rastreamento server-side</li><li>Bloqueio sistêmico e QR Code na recepção para fechar o ciclo do dado</li><li>Automação de dados offline via N8N devolvendo resultado para Meta e Google</li></ul>
+            </div>
+            <div class="card">
+              <span class="tag ext">Gargalo de conversão</span>
+              <h4 class="blk" style="margin-top:10px">A unidade não converte o lead que recebe</h4>
+              <p class="muted">No-show alto, recepção que ignora o funil e equipe sem tratamento de objeção seguram o resultado na ponta.</p>
+              <ul class="clean p"><li>Relatório de objeções a partir das conversas de agendamento</li><li>Biblioteca de scripts e trilhas de recuperação obrigatórias</li><li>Compliance de registro com consequência definida</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FRENTE B -->
+      <div class="frente b" style="margin-top:26px">
+        <div class="fhead">
+          <div class="fk">Frente B</div>
+          <h3>Atendimento e agendamento · da fragmentação à IA própria</h3>
+        </div>
+        <div class="fbody">
+          <p class="muted" style="margin-top:0">O agendamento hoje se apoia em três mecanismos fragmentados. A internalização consolida em um modelo único: IA no WhatsApp, humanos na voz, exceção na clínica. O sistema está na Seção 4.</p>
+          <div class="state3">
+            <div class="state">
+              <h4>IA externa (Louise) <span class="tag ext">terceirizado</span></h4>
+              <p class="muted" style="margin:8px 0 0">Assistente de agendamento contratada de terceiro. Ticket alto, entrega instável.</p>
+              <div class="metrics">Abril: ticket <b>+43%</b> (R$14,7k), comparecimento <b>de 98% para 38%</b>, efetivações <b>-31%</b>.<span class="src">relatório B2C abril/2026</span></div>
+            </div>
+            <div class="state">
+              <h4>Call center <span class="tag ext">terceirizado</span></h4>
+              <p class="muted" style="margin:8px 0 0">Forte no topo, fraco no fechamento, que depende da unidade.</p>
+              <div class="metrics">Agendamento de lista fria de <b>172 a 293/mês</b> nos melhores meses, cobertura de fim de semana. Vendas de <b>4 a 11/mês</b>.<span class="src">painel call center, jan a mai/2026</span></div>
+            </div>
+            <div class="state">
+              <h4>Captadoras e SDR internas <span class="tag now">no time</span></h4>
+              <p class="muted" style="margin:8px 0 0">Célula própria em razão de 1 pessoa para 2 unidades, cobrindo WhatsApp e telefone ao mesmo tempo.</p>
+              <div class="metrics">É esse time que muda de papel: com a IA no WhatsApp, elas concentram na ligação para quem não respondeu.<span class="src">fonte: operação atual</span></div>
+            </div>
+          </div>
+          <div class="callout key" style="margin-top:22px">
+            <span class="lbl">Decisão de horizonte</span>
+            O call center resolve o topo de lista fria agora e funciona como ponte. A IA própria assume o WhatsApp de ponta a ponta e é o que se torna produto vendável. As captadoras e SDRs atuais não saem da operação: mudam de canal, do WhatsApp para a voz.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PLATAFORMA DE IA -->
+    <section id="s4">
+      <div class="sec-head">
+        <div class="num">4.0</div>
+        <div>
+          <h2>A plataforma de IA de atendimento</h2>
+          <div class="kick">A regra de canal é simples: o WhatsApp é exclusivo da IA, a voz é do time humano, e a exceção vai para o atendimento da própria clínica. Abaixo, o sistema completo, o que a IA pode e não pode fazer, e as pessoas que a plataforma exige.</div>
+        </div>
+      </div>
+
+      <h3 class="blk">O fluxo de ponta a ponta</h3>
+      <div class="pipe">
+        <div class="pstep"><div class="pi">01</div><h4>Captura</h4><p>Lead chega da mídia e entra no CRM com o sinal da campanha.</p></div>
+        <div class="pstep"><div class="pi">02</div><h4>Qualificação IA</h4><p>A IA conversa no WhatsApp, checa perfil e intenção pelo roteiro da unidade.</p></div>
+        <div class="pstep"><div class="pi">03</div><h4>Agendamento IA</h4><p>A IA oferece horário e grava direto na agenda da unidade.</p></div>
+        <div class="pstep"><div class="pi">04</div><h4>Confirmação IA</h4><p>Lembrete e reconfirmação automáticos para reduzir a falta.</p></div>
+        <div class="pstep"><div class="pi">05</div><h4>Voz humana</h4><p>Quem não respondeu no WhatsApp entra na fila de ligação das captadoras.</p></div>
+      </div>
+
+      <div class="cardgrid g2" style="margin-top:20px">
+        <div class="card">
+          <div class="eyebrow-s">Regra de exceção</div>
+          <h3 class="blk">A exceção volta para a clínica</h3>
+          <p class="muted">Pergunta clínica, negociação de valor fora do padrão ou reclamação são casos que a IA não resolve e não deve resolver. Nesses casos ela transfere a conversa para o atendimento da própria unidade, com resumo do contexto e alerta no sistema. Isso elimina a necessidade de um time central de exceção e mantém a responsabilidade clínica onde ela pertence, na clínica.</p>
+        </div>
+        <div class="card">
+          <div class="eyebrow-s">Novo papel do time atual</div>
+          <h3 class="blk">Captadoras e SDRs migram para a voz</h3>
+          <p class="muted">O WhatsApp fica exclusivo da IA. As captadoras e SDRs que hoje cobrem 2 unidades cada uma no canal de texto passam a operar a fila de ligação: lead que não respondeu no WhatsApp em prazo definido recebe ligação registrada em VoIP. Uma pessoa na voz cobre mais unidades do que no modelo atual, porque atende só o resíduo que a IA não converteu. <span class="est">razão de cobertura na Seção 6, premissa a validar</span></p>
+        </div>
+      </div>
+
+      <h3 class="blk" style="margin-top:26px">O que a IA pode e o que não pode</h3>
+      <div class="cardgrid g2">
+        <div class="card">
+          <h4 class="blk">Dentro do escopo da IA</h4>
+          <ul class="clean"><li>Responder em segundos, a qualquer hora, todos os dias</li><li>Qualificar pelo roteiro e registrar os campos no CRM</li><li>Oferecer horário real da agenda da unidade e gravar a marcação</li><li>Confirmar, remarcar e cobrar presença com trilha de no-show</li><li>Registrar objeção e motivo de não agendamento para o relatório da unidade</li></ul>
+        </div>
+        <div class="card">
+          <h4 class="blk">Fora do escopo, com transferência</h4>
+          <ul class="clean p"><li>Orientação clínica ou de tratamento, transferida à clínica</li><li>Negociação de preço fora da tabela da unidade, transferida à clínica</li><li>Reclamação formal, transferida à clínica com registro</li><li>Lead sem resposta no WhatsApp, roteado à fila de voz das captadoras</li></ul>
+        </div>
+      </div>
+
+      <h3 class="blk" style="margin-top:26px">Base de conhecimento por unidade</h3>
+      <p class="muted" style="max-width:78ch">A IA responde por unidade, não de forma genérica. Cada unidade tem um registro com procedimentos ofertados, faixa de preço, horários, endereço, regras de convênio e roteiro de qualificação. A onboarding de uma unidade nova na plataforma consiste em preencher e homologar esse registro, o que padroniza a ativação e sustenta a escala.</p>
+
+      <h3 class="blk" style="margin-top:20px">Plataformas e ferramentas</h3>
+      <div class="stackgrid">
+        <div class="stk"><div class="sl">Conversa</div><h4>Modelo de linguagem via API</h4><p>Motor do diálogo de qualificação e agendamento, treinado nos scripts e nas objeções reais registradas pela operação.</p></div>
+        <div class="stk"><div class="sl">Canal</div><h4>WhatsApp via API</h4><p>Canal exclusivo da IA, pela API já em uso na operação, com número separado por função.</p></div>
+        <div class="stk"><div class="sl">Orquestração</div><h4>N8N</h4><p>Conecta WhatsApp, o modelo, o CRM e a agenda, e aplica as regras de transferência para a clínica e de roteamento para a fila de voz.</p></div>
+        <div class="stk"><div class="sl">Memória e dados</div><h4>Supabase</h4><p>Histórico da conversa, estado do lead, base de conhecimento por unidade e a camada de inteligência de geração de paciente.</p></div>
+        <div class="stk"><div class="sl">CRM e agenda</div><h4>RD Station e agenda da clínica</h4><p>O lead vive no CRM e a marcação é gravada no sistema de agenda da unidade, integrados por automação.</p></div>
+        <div class="stk"><div class="sl">Voz</div><h4>VoIP com registro</h4><p>Fila de ligação das captadoras para o lead sem resposta, com gravação e métrica de contato por unidade.</p></div>
+      </div>
+
+      <h3 class="blk" style="margin-top:26px">Monitoria e qualidade da IA</h3>
+      <div class="cardgrid g3">
+        <div class="card"><h4 class="blk">Amostragem de conversas</h4><p class="muted">A coordenação lê uma amostra semanal de conversas por unidade e classifica a qualidade, o que alimenta o ajuste de roteiro.</p></div>
+        <div class="card"><h4 class="blk">Métricas por unidade</h4><p class="muted">Response time, taxa de agendamento, comparecimento e taxa de transferência à clínica, comparadas ao padrão do fornecedor atual.</p></div>
+        <div class="card"><h4 class="blk">Gatilho de rollback</h4><p class="muted">Unidade com comparecimento abaixo do piso volta ao atendimento anterior enquanto o roteiro é corrigido, sem discussão caso a caso.</p></div>
+      </div>
+
+      <h3 class="blk" style="margin-top:26px">Pessoas que a plataforma exige</h3>
+      <p class="muted" style="max-width:78ch">O núcleo técnico da plataforma é pequeno por desenho, porque a exceção vai para a clínica e o volume fica na IA. O que cresce com a rede é a fila de voz, a gestão de tráfego e o Franchise Success, dimensionados na Seção 6.</p>
+      <table>
+        <thead><tr><th style="width:32%">Papel</th><th style="width:18%">Situação</th><th>Responsabilidade</th></tr></thead>
+        <tbody>
+          <tr><td class="cell-h">Perfil técnico de IA e automação</td><td><span class="tag build">a desenvolver</span></td><td>Constrói e mantém roteiros, fluxos, integrações e a base de conhecimento por unidade</td></tr>
+          <tr><td class="cell-h">Coordenação de agendamento</td><td><span class="tag now">no time</span></td><td>Monitoria de conversas, qualidade da IA, gestão da fila de voz e feedback às unidades</td></tr>
+          <tr><td class="cell-h">Captadoras e SDRs (voz)</td><td><span class="tag now">no time, papel novo</span></td><td>Ligação para o lead sem resposta no WhatsApp, com registro em VoIP</td></tr>
+          <tr><td class="cell-h">Analista de dados</td><td><span class="tag now">no time</span></td><td>Atribuição, deduplicação, métricas de comparecimento e alimentação da base</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 5. TECNOLOGIA DE ESCALA -->
+    <section id="s5">
+      <div class="sec-head">
+        <div class="num">5.0</div>
+        <div>
+          <h2>Tecnologia de escala</h2>
+          <div class="kick">Três camadas separadas: páginas, mídia e sinal, agendamento. A escala vem de templatizar a unidade como um registro de dados, não como um build individual.</div>
+        </div>
+      </div>
+
+      <div class="cardgrid g2">
+        <div class="card">
+          <span class="eyebrow-s">Camada de páginas</span>
+          <h3 class="blk">Um app templatizado, não 300 páginas soltas</h3>
+          <p class="muted">Construir uma página individual por unidade não sustenta 300+ unidades. A arquitetura é um app único onde a unidade é um registro: a mesma estrutura de página lê os dados da unidade (nome, endereço, procedimentos, oferta local) e renderiza a versão dela. Ativar uma unidade nova vira inserção de dados, não projeto de desenvolvimento.</p>
+          <ul class="clean p"><li>Template único, variação por unidade via Supabase</li><li>Formulários integrados ao CRM com o padrão de cadastro atual</li><li>Conta de plataforma dedicada, separada da operação B2B</li></ul>
+        </div>
+        <div class="card">
+          <span class="eyebrow-s">Camada de mídia e sinal</span>
+          <h3 class="blk">O dado do paciente volta para o anúncio</h3>
+          <p class="muted">A gestão de mídia, o rastreamento e o retorno de dados são camada própria. O ciclo fecha quando a venda na cadeira volta como sinal para a plataforma de anúncio otimizar.</p>
+          <ul class="clean p"><li>API de conversão e rastreamento server-side por unidade</li><li>QR Code na recepção conectando a visita física ao lead digital</li><li>N8N devolvendo conversão offline para Meta e Google</li><li>Estrutura de contas de anúncio padronizada por unidade, sem contaminação de atribuição entre unidades</li></ul>
+        </div>
+      </div>
+
+      <div class="cardgrid g2" style="margin-top:16px">
+        <div class="card">
+          <span class="eyebrow-s">Camada de agendamento</span>
+          <h3 class="blk">A IA como serviço central plugado na unidade</h3>
+          <p class="muted">A plataforma da Seção 4 roda central e se pluga na unidade por dois pontos: a base de conhecimento dela e a agenda dela. É esse desenho que permite ativar unidades em lote e que, no Horizonte 3, permite plugar uma clínica que nem é Oral Unic.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow-s">Homologação de ativação</span>
+          <h3 class="blk">Checklist para ligar uma unidade</h3>
+          <p class="muted">Uma unidade entra na plataforma quando cumpre o checklist: base de conhecimento preenchida e validada pelo franqueado, agenda integrada, API de conversão ativa, página da unidade no ar e teste de conversa aprovado pela coordenação. Sem checklist completo, a unidade não liga, o que protege a qualidade na escala.</p>
+        </div>
+      </div>
+
+      <div class="callout gov">
+        <span class="lbl">Dimensionamento técnico</span>
+        O dimensionamento do ambiente, os limites de custo de API e a arquitetura final de integração com os sistemas de agenda são responsabilidade da diretoria de tecnologia, com alinhamento pendente. O desenho acima define o que a operação precisa que a tecnologia entregue.
+      </div>
+    </section>
+
+    <!-- 6. CAPACIDADE, RECEITA E CUSTO -->
+    <section id="s6">
+      <div class="sec-head">
+        <div class="num">6.0</div>
+        <div>
+          <h2>Capacidade, receita e custo por fase</h2>
+          <div class="kick">Quanto entra de receita de fee e quanto sai de custo de pessoas em cada fase, com o time dimensionado por razão de cobertura. O Franchise Success opera em duplas por bloco de unidades.</div>
+        </div>
+      </div>
+
+      <h3 class="blk">Razões de cobertura por papel</h3>
+      <table>
+        <thead><tr><th style="width:30%">Papel</th><th style="width:22%">Razão de cobertura</th><th>Base</th></tr></thead>
+        <tbody>
+          <tr><td class="cell-h">Agendamento no modelo atual</td><td>1 pessoa : 2 unidades</td><td>Dado da operação atual, cobrindo WhatsApp e telefone juntos <span class="src">fonte: operação, jul/2026</span></td></tr>
+          <tr><td class="cell-h">Captadora na voz, com IA no WhatsApp</td><td><span class="est">1 : 6 subindo para 1 : 12</span></td><td>Premissa: a fila de voz recebe só o lead sem resposta, e a razão melhora conforme a IA converte mais <span class="est">a validar no piloto</span></td></tr>
+          <tr><td class="cell-h">Gestor de tráfego</td><td><span class="est">1 : 15 subindo para 1 : 30</span></td><td>Premissa apoiada em contas padronizadas e automação de relatório <span class="est">a validar com a operação</span></td></tr>
+          <tr><td class="cell-h">Franchise Success</td><td><span class="est">1 dupla : 25 unidades</span></td><td>Premissa: duplas por bloco de unidades, para cobertura mútua e continuidade de atendimento <span class="est">razão a definir com a coordenação</span></td></tr>
+          <tr><td class="cell-h">Técnico de IA e automação</td><td>1 a 3 no total</td><td>Núcleo central da plataforma, não escala por unidade</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="blk" style="margin-top:26px">Faseamento: receita que entra, custo de pessoas que sai</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Fase</th>
+            <th class="tc">Unid.</th>
+            <th class="tc">Tráfego</th>
+            <th class="tc">Voz</th>
+            <th class="tc">FS (duplas)</th>
+            <th class="tc">Téc. IA</th>
+            <th class="tc">Dados + Coord.</th>
+            <th class="tc">Total pessoas</th>
+            <th class="tc">Receita fee/mês</th>
+            <th class="tc">Custo pessoas/mês</th>
+            <th class="tc">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-h">F1 · atual</td>
+            <td class="tc">8</td>
+            <td class="tc">1</td>
+            <td class="tc">4</td>
+            <td class="tc">2 (1)</td>
+            <td class="tc">0</td>
+            <td class="tc">2</td>
+            <td class="tc"><b>9</b></td>
+            <td class="tc pos">R$28k</td>
+            <td class="tc neg">R$57k</td>
+            <td class="tc neg">-R$29k</td>
+          </tr>
+          <tr>
+            <td class="cell-h">F2 · piloto IA</td>
+            <td class="tc">~30</td>
+            <td class="tc">2</td>
+            <td class="tc">5</td>
+            <td class="tc">4 (2)</td>
+            <td class="tc">1</td>
+            <td class="tc">2</td>
+            <td class="tc"><b>14</b></td>
+            <td class="tc pos">R$105k</td>
+            <td class="tc neg">R$83k</td>
+            <td class="tc pos">+R$22k</td>
+          </tr>
+          <tr>
+            <td class="cell-h">F3 · escala</td>
+            <td class="tc">~100</td>
+            <td class="tc">4</td>
+            <td class="tc">12</td>
+            <td class="tc">8 (4)</td>
+            <td class="tc">2</td>
+            <td class="tc">4</td>
+            <td class="tc"><b>30</b></td>
+            <td class="tc pos">R$350k</td>
+            <td class="tc neg">R$194k</td>
+            <td class="tc pos">+R$156k</td>
+          </tr>
+          <tr>
+            <td class="cell-h">F4 · rede</td>
+            <td class="tc">300+</td>
+            <td class="tc">10</td>
+            <td class="tc">25</td>
+            <td class="tc">24 (12)</td>
+            <td class="tc">3</td>
+            <td class="tc">6</td>
+            <td class="tc"><b>68</b></td>
+            <td class="tc pos">R$1.050k</td>
+            <td class="tc neg">R$430k</td>
+            <td class="tc pos">+R$620k</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top:12px;font-size:12.5px"><span class="est">Premissas da tabela, todas a validar com o financeiro: receita assume 100% das unidades no pacote completo de R$3.500 (tráfego + agendamento); o mix com o pacote de R$2.500 reduz a linha de receita. Custo de pessoas usa custo médio de mercado por função (tráfego R$8k, voz R$5k, técnico de IA R$10k, dados R$8k, FS R$6k por pessoa, coordenação R$9k, custo empresa mensal), sem referência a salários individuais do time atual. O custo exclui mídia (paga pela unidade), ferramentas, API de WhatsApp e call center.</span></p>
+
+      <div class="callout key">
+        <span class="lbl">As três leituras da tabela</span>
+        Primeira: o modelo atual é deficitário por desenho, a Fase 1 custa mais em pessoas do que fatura em fee, e é a IA que inverte o sinal a partir da Fase 2. Segunda: as unidades crescem 37 vezes entre a Fase 1 e a Fase 4 e o time cresce 7,5 vezes, porque o WhatsApp inteiro sai do humano. Terceira: ninguém do time atual sai da operação, as captadoras e SDRs migram do texto para a voz e o Franchise Success cresce em duplas junto com a rede.
+      </div>
+
+      <div class="callout gov">
+        <span class="lbl">O handoff em três passos</span>
+        Fase 2, copiloto: a IA sugere resposta e a captadora confirma, enquanto a fila de voz começa a operar. Fase 3, autonomia no texto: a IA responde o WhatsApp sozinha e toda captadora está na voz. Fase 4, padrão de rede: IA no texto, voz no resíduo, exceção na clínica, e o call center encerrado ou reduzido à lista fria.
+      </div>
+    </section>
+
+    <!-- 7. FUNIL DE ADESÃO -->
+    <section id="s7">
+      <div class="sec-head">
+        <div class="num">7.0</div>
+        <div>
+          <h2>Funil de adesão da rede</h2>
+          <div class="kick">A adesão dos 300 franqueados é voluntária, então precisa de funil próprio: um produto gratuito de entrada que prova valor antes de pedir o fee, e uma comunidade de franqueados internalizados que transforma resultado em prova social.</div>
+        </div>
+      </div>
+
+      <h3 class="blk">O caminho do franqueado até o fee</h3>
+      <div class="adfun">
+        <div class="adf"><div class="ai">1</div><h4>Auditoria gratuita</h4><p>Análise da conta de mídia e do funil da unidade, sem custo, mostrando o que a agência atual não mede.</p></div>
+        <div class="adf"><div class="ai">2</div><h4>Diagnóstico com número</h4><p>Relatório da unidade: custo por lead, taxa de agendamento e receita perdida estimada no modelo atual.</p></div>
+        <div class="adf"><div class="ai">3</div><h4>Case ao lado</h4><p>Comparação com unidade internalizada de porte e praça semelhantes, com resultado medido.</p></div>
+        <div class="adf"><div class="ai">4</div><h4>Adesão ao fee</h4><p>Contrato de R$2.500 ou R$3.500 com SLA documentado e portas de saída claras.</p></div>
+      </div>
+
+      <div class="cardgrid g2" style="margin-top:20px">
+        <div class="card">
+          <div class="eyebrow-s">Produto gratuito de entrada</div>
+          <h3 class="blk">A auditoria como isca de adesão</h3>
+          <p class="muted">A auditoria gratuita cumpre a mesma função que a isca cumpre no funil B2B: entrega valor antes da oferta e grava o dado que qualifica. Para o franqueado cético, o relatório da própria unidade é um argumento que nenhuma apresentação institucional substitui, e o custo de produção é baixo porque os dados já passam pela operação central.</p>
+        </div>
+        <div class="card">
+          <div class="eyebrow-s">Comunidade de franqueados</div>
+          <h3 class="blk">Grupo dos internalizados</h3>
+          <p class="muted">Canal dos franqueados que já aderiram, com resultado mensal por unidade, ranking de indicadores e espaço de troca. O grupo funciona como motor de adesão, porque o franqueado de fora ouve o resultado de quem está dentro, e como radar de insatisfação, porque a reclamação aparece ali antes de virar tema de convenção.</p>
+        </div>
+      </div>
+
+      <div class="callout gov">
+        <span class="lbl">Ordem de abordagem da rede</span>
+        A expansão da Fase 2 prioriza unidades com dor declarada de agência e praças onde já existe unidade internalizada com resultado, porque o case ao lado encurta a decisão. Unidade satisfeita com a agência atual fica para as fases seguintes, quando o volume de casos torna a comparação inevitável.
+      </div>
+    </section>
+
+    <!-- 8. LANÇAMENTO -->
+    <section id="s8">
+      <div class="sec-head">
+        <div class="num">8.0</div>
+        <div>
+          <h2>Projeto de lançamento</h2>
+          <div class="kick">Sequência com portões de decisão, a partir das 8 unidades já internalizadas. Cada etapa só libera a próxima se o critério de qualidade for atingido.</div>
+        </div>
+      </div>
+
+      <div class="road">
+        <div class="rstep"><div class="rdot"></div><div class="rlabel">Base · concluída</div><h4>8 unidades internalizadas</h4><p>Mídia e agendamento rodando dentro de casa, com API de conversão ativa e casos mensuráveis documentados.</p><span class="gate">Portão vencido: caso replicável validado</span></div>
+        <div class="rstep"><div class="rdot"></div><div class="rlabel">Etapa 1 · IA copiloto</div><h4>IA assiste as captadoras nas 8 unidades</h4><p>A IA sugere as respostas do WhatsApp e a captadora confirma, enquanto a base de conhecimento por unidade e a fila de voz são montadas.</p><span class="gate">Portão: paridade de comparecimento com o fornecedor atual</span></div>
+        <div class="rstep"><div class="rdot"></div><div class="rlabel">Etapa 2 · Fase 2</div><h4>Expansão para ~30 unidades, IA autônoma no texto</h4><p>Funil de adesão ativo com auditoria gratuita, IA respondendo o WhatsApp sozinha, captadoras integralmente na voz, semáforo de risco por unidade ligado.</p><span class="gate">Portão: meta de CAC, agendamento e satisfação estável</span></div>
+        <div class="rstep"><div class="rdot"></div><div class="rlabel">Etapa 3 · Fase 3</div><h4>Escala para ~100 unidades</h4><p>Ativação em lote pelo checklist de homologação, comunidade de franqueados rodando, receita recorrente comprovada na margem da tabela da Seção 6.</p><span class="gate">Portão: modelo de receita provado em volume</span></div>
+        <div class="rstep"><div class="rdot"></div><div class="rlabel">Etapa 4 · Rede</div><h4>Cobertura de 300+ unidades</h4><p>IA como padrão da rede, voz no resíduo, exceção na clínica, evolução do fee para lead broker.</p><span class="gate">Portão: operação da rede estável e lucrativa</span></div>
+        <div class="rstep"><div class="rdot"></div><div class="rlabel">Etapa 5 · Produto</div><h4>Oferta fora da rede</h4><p>Plataforma de agendamento e geração de paciente para clínicas externas, plugada pela base de conhecimento e pela agenda, com a camada de dados como diferencial.</p><span class="gate">Portão: rede estável antes de abrir o produto</span></div>
+      </div>
+    </section>
+
+    <!-- 9. RECEITA -->
+    <section id="s9">
+      <div class="sec-head">
+        <div class="num">9.0</div>
+        <div>
+          <h2>Receita e visão de produto</h2>
+          <div class="kick">Três modelos de receita encadeados, do custo substituído ao produto de mercado.</div>
+        </div>
+      </div>
+
+      <div class="horizons">
+        <div class="hz hz1">
+          <div class="step">Modelo 1</div>
+          <h3>Fee de gestão</h3>
+          <p>R$2.500 por unidade só com tráfego, R$3.500 com tráfego e agendamento. Receita recorrente que substitui o gasto com agência.</p>
+          <div class="foot">Recorrente · por unidade</div>
+        </div>
+        <div class="hz hz2">
+          <div class="step">Modelo 2</div>
+          <h3>Lead broker</h3>
+          <p>Cobrança por lead qualificado entregue, após estabilizar o sinal. O incentivo do serviço passa a ser o resultado da unidade.</p>
+          <div class="foot">Variável · por resultado</div>
+        </div>
+        <div class="hz hz3">
+          <div class="step">Modelo 3</div>
+          <h3>Produto Legacy</h3>
+          <p>Plataforma de agendamento por IA vendida a clínicas fora da rede. A entrega é rápida para clínicas menores porque a inteligência já existe.</p>
+          <div class="foot">Escalável · fora da rede</div>
+        </div>
+      </div>
+
+      <div class="callout gov">
+        <span class="lbl">Conexão com o Fundo Nacional de Propaganda</span>
+        A internalização amplia a parcela mensurável e com retorno direto do que o franqueado paga ao fundo. Ela não encerra o debate atual sobre a alocação do fundo, e dá o argumento estrutural de para onde a verba passa a gerar resultado rastreável por unidade.
+      </div>
+    </section>
+
+    <!-- 10. RISCO -->
+    <section id="s10">
+      <div class="sec-head">
+        <div class="num">10.0</div>
+        <div>
+          <h2>Risco de rede e mitigação</h2>
+          <div class="kick">O risco mais alto do projeto é o de relacionamento com a rede, e ele exige controle estrutural, não promessa de qualidade.</div>
+        </div>
+      </div>
+
+      <div class="callout risk">
+        <span class="lbl">O risco central</span>
+        O atendimento que hoje sustenta a satisfação depende de acompanhamento próximo e não escala na forma atual. Se a qualidade cair na transição para a IA e para o time de voz, a internalização vira a reclamação que se quer evitar, com dano à relação de franquia. A mitigação precisa ser estrutural.
+      </div>
+
+      <div class="mit">
+        <div class="mcard"><div class="mn">M1</div><h4>SLA de atendimento documentado</h4><p>Padrão escrito de response time e resolução, que independe de pessoa e é auditável na IA e na fila de voz.</p></div>
+        <div class="mcard"><div class="mn">M2</div><h4>Semáforo de risco por unidade</h4><p>Sinalização da unidade em risco por custo, no-show ou queda de indicador antes de a insatisfação chegar ao franqueado.</p></div>
+        <div class="mcard"><div class="mn">M3</div><h4>Relatório de vendas perdidas</h4><p>Registro do lead agendado que a unidade não atendeu ou deixou dar no-show, o que devolve à clínica a responsabilidade da operação dela e protege a percepção do serviço.</p></div>
+        <div class="mcard"><div class="mn">M4</div><h4>Paridade e rollback</h4><p>A IA só assume mais volume quando iguala o comparecimento do fornecedor atual, e a unidade abaixo do piso volta ao modelo anterior enquanto o roteiro é corrigido.</p></div>
+        <div class="mcard"><div class="mn">M5</div><h4>Adesão voluntária pelo funil</h4><p>A entrada da unidade passa pela auditoria gratuita e pelo case ao lado, o que substitui a adesão imposta pela adesão convencida.</p></div>
+        <div class="mcard"><div class="mn">M6</div><h4>Comunidade de franqueados como radar</h4><p>O grupo dos internalizados dá visibilidade de resultado e capta a reclamação cedo, antes de ela escalar para a convenção ou para a diretoria.</p></div>
+        <div class="mcard"><div class="mn">M7</div><h4>Homologação e monitoramento por unidade</h4><p>Checklist de ativação obrigatório e acompanhamento de satisfação com gatilho de intervenção, para tratar queda localizada antes que vire percepção de rede.</p></div>
+        <div class="mcard"><div class="mn">M8</div><h4>Expectativa calibrada</h4><p>Comunicação do que a internalização entrega em cada fase, sem prometer o nível de atendimento individual que não se sustenta em escala.</p></div>
+      </div>
+    </section>
+
+    </div><!-- /wrap -->
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand">Oral Unic</div>
+      <div class="small">Internalização · Documento estratégico para a diretoria · Julho 2026</div>
+    </div>
+    <div class="small">Dados internos marcados por fonte · estimativas e premissas em âmbar itálico · confidencial</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('nav.toc a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var id='#'+e.target.id;links.forEach(function(l){l.classList.toggle('active',l.getAttribute('href')===id)})}})},{rootMargin:'-30% 0px -60% 0px'});
+  secs.forEach(function(s){if(s)io.observe(s)});
+  var rev=[].slice.call(document.querySelectorAll('.card,.mcard,.hz,.phase,.rstep,.state,.callout,.pstep,.stk,.adf'));
+  rev.forEach(function(el){el.classList.add('reveal')});
+  var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+  rev.forEach(function(el){ro.observe(el)});
+})();
+</script>
+</body>
+</html>

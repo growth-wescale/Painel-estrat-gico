@@ -1,0 +1,1 @@
+UPDATE public.panel_access SET role = 'admin', updated_at = now() WHERE lower(email) = 'gustavo.freitas@oralunic.com.br';

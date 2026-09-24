@@ -1,0 +1,568 @@
+<style>/*LOVABLE_HIDE_SCROLLBARS*/html,body,*{scrollbar-width:none!important;-ms-overflow-style:none!important}html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}</style>
+<!-- Painel do Programa de Iscas B2B — WeScale Growth -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programa de Iscas B2B — Painel</title>
+<style>
+  :root{
+    --ink:#2A0523;        /* wine-purple deep, texto estrutural */
+    --dark:#540247;       /* dark purple */
+    --med:#7E0E70;        /* medium purple */
+    --teal:#2ABCB5;       /* teal, sinal ativo */
+    --teal-d:#1B8E88;
+    --wine:#4A0E4E;
+    --off:#FBF9F9;        /* off-white base */
+    --amber:#B45309;      /* âmbar: só validação/estimativa */
+    --amber-bg:#FCF3E8;
+    --line:#EADFE7;
+    --line-2:#D9C9D4;
+    --muted:#7A6B76;
+    --card:#FFFFFF;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:Arial,"Helvetica Neue",Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--off);color:var(--ink);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 72px}
+
+  /* ---- header ---- */
+  header{
+    background:var(--ink);color:var(--off);
+    padding:26px 0 22px;margin-bottom:0;
+  }
+  .head-inner{max-width:1080px;margin:0 auto;padding:0 20px}
+  .eyebrow{
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--teal);font-weight:700;margin:0 0 8px;
+  }
+  h1{font-size:28px;line-height:1.1;margin:0;font-weight:800;letter-spacing:-.01em}
+  h1 .sub{display:block;font-size:15px;font-weight:400;color:#D7C4D2;letter-spacing:0;margin-top:6px}
+
+  /* diagnosis strip */
+  .diag{
+    background:var(--dark);color:var(--off);
+    border-top:1px solid rgba(255,255,255,.08);
+  }
+  .diag-inner{
+    max-width:1080px;margin:0 auto;padding:12px 20px;
+    display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;
+    font-size:12.5px;
+  }
+  .diag b{color:var(--teal);font-family:var(--mono);font-weight:600}
+  .diag span{color:#E3D3DE}
+
+  /* ---- tabs ---- */
+  nav.tabs{
+    position:sticky;top:0;z-index:20;background:var(--off);
+    border-bottom:1px solid var(--line-2);
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+  }
+  .tabs-inner{max-width:1080px;margin:0 auto;padding:0 12px;display:flex;gap:2px;min-width:max-content}
+  .tab{
+    appearance:none;border:0;background:none;cursor:pointer;
+    font-family:var(--sans);font-size:13px;color:var(--muted);
+    padding:14px 12px 12px;border-bottom:2px solid transparent;
+    white-space:nowrap;font-weight:600;letter-spacing:.01em;
+  }
+  .tab:hover{color:var(--dark)}
+  .tab[aria-selected="true"]{color:var(--dark);border-bottom-color:var(--teal)}
+  .tab .n{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:5px}
+  .tab[aria-selected="true"] .n{color:var(--teal-d)}
+
+  /* ---- panels ---- */
+  .panel{display:none;padding-top:26px;animation:rise .28s ease}
+  .panel.on{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.panel{animation:none}}
+
+  h2{font-size:20px;margin:0 0 4px;color:var(--dark);font-weight:800;letter-spacing:-.01em}
+  .tagline{color:var(--muted);font-size:13.5px;margin:0 0 18px}
+
+  /* badges */
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+  .badge{
+    display:inline-flex;flex-direction:column;gap:1px;
+    border:1px solid var(--line-2);border-radius:8px;padding:8px 12px;background:var(--card);
+    min-width:96px;
+  }
+  .badge .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .badge .v{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--ink)}
+  .badge.role .v{font-family:var(--sans);font-size:13px}
+  .badge.hot{border-color:var(--teal);background:#F0FBFA}
+  .badge.warn{border-color:var(--amber);background:var(--amber-bg)}
+  .badge.warn .v,.badge.warn .k{color:var(--amber)}
+
+  /* sections inside brand */
+  .block{margin:0 0 22px}
+  .lab{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal-d);font-weight:700;margin:0 0 8px;
+  }
+  .isca-name{font-size:16px;font-weight:700;color:var(--wine);margin:0 0 4px}
+  .p{margin:0 0 8px;font-size:14px}
+  .capture{
+    display:inline-block;background:#F0FBFA;border:1px solid var(--teal);
+    color:var(--teal-d);font-size:12px;font-weight:700;border-radius:6px;
+    padding:3px 9px;margin-top:2px;
+  }
+
+  ul.clean{list-style:none;margin:0;padding:0}
+  ul.clean li{
+    position:relative;padding:7px 0 7px 18px;font-size:13.5px;
+    border-bottom:1px solid var(--line);
+  }
+  ul.clean li:last-child{border-bottom:0}
+  ul.clean li:before{
+    content:"";position:absolute;left:2px;top:14px;width:6px;height:6px;
+    border-radius:2px;background:var(--med);
+  }
+  ul.clean li b{color:var(--ink)}
+  ul.clean li .desc{color:var(--muted)}
+
+  /* email timeline */
+  .mail{display:flex;flex-direction:column;gap:0;border:1px solid var(--line-2);border-radius:10px;overflow:hidden}
+  .mail-row{display:grid;grid-template-columns:64px 1fr;gap:0;border-bottom:1px solid var(--line)}
+  .mail-row:last-child{border-bottom:0}
+  .mail-day{
+    background:var(--dark);color:var(--off);font-family:var(--mono);
+    font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;
+  }
+  .mail-body{padding:10px 12px}
+  .mail-body .asset{font-size:13.5px;font-weight:700;color:var(--ink)}
+  .mail-body .fn{font-size:12px;color:var(--muted);margin-top:2px}
+  .flag{color:var(--amber);font-weight:700}
+
+  /* callout */
+  .call{
+    border:1px solid var(--line-2);border-left:5px solid var(--teal);
+    background:var(--card);border-radius:8px;padding:13px 15px;margin:0 0 20px;
+  }
+  .call.amber{border-left-color:var(--amber)}
+  .call .ct{font-size:13px;font-weight:800;color:var(--dark);margin:0 0 5px}
+  .call.amber .ct{color:var(--amber)}
+  .call p{margin:0 0 6px;font-size:13px;color:#3a2b34}
+  .call p:last-child{margin:0}
+
+  /* score model */
+  .gate{border:1px solid var(--line-2);border-radius:12px;overflow:hidden;margin:0 0 22px;background:var(--card)}
+  .gate-zone{display:grid;grid-template-columns:112px 1fr;border-bottom:1px solid var(--line)}
+  .gate-zone:last-child{border-bottom:0}
+  .gate-score{
+    font-family:var(--mono);font-weight:700;font-size:15px;color:var(--off);
+    display:flex;align-items:center;justify-content:center;padding:14px 8px;text-align:center;
+  }
+  .z1 .gate-score{background:var(--teal-d)}
+  .z2 .gate-score{background:var(--med)}
+  .z3 .gate-score{background:#9C8A97}
+  .gate-txt{padding:12px 14px}
+  .gate-txt .gt{font-weight:800;font-size:14px;color:var(--ink)}
+  .gate-txt .gd{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+  .weights{display:flex;flex-direction:column;gap:10px;margin:0 0 22px}
+  .wrow{display:grid;grid-template-columns:150px 1fr 42px;gap:12px;align-items:center}
+  .wrow .wn{font-size:13px;font-weight:600}
+  .wbar{height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+  .wbar i{display:block;height:100%;background:linear-gradient(90deg,var(--med),var(--teal));border-radius:6px;width:0;transition:width .7s ease}
+  .wrow .wv{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right;color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){.wbar i{transition:none}}
+
+  /* waves */
+  .waves{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 22px}
+  .waves th,.waves td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  .waves thead th{background:var(--dark);color:var(--off);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .waves tbody tr:nth-child(even){background:var(--off)}
+  .waves .cal{font-weight:700;color:var(--wine)}
+  .waves .imp{font-weight:700;color:var(--teal-d)}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:640px){
+    .grid2{grid-template-columns:1fr}
+    .wrow{grid-template-columns:112px 1fr 38px}
+    h1{font-size:23px}
+  }
+
+  footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line-2);font-size:12px;color:var(--muted)}
+  footer b{color:var(--dark)}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+</style>
+
+<header>
+  <div class="head-inner">
+    <p class="eyebrow">WeScale · Growth B2B</p>
+    <h1>Programa de Iscas B2B
+      <span class="sub">Painel de execução · isca, score de qualificação e conteúdo por e-mail</span>
+    </h1>
+  </div>
+</header>
+<div class="diag">
+  <div class="diag-inner">
+    <span>Jun/26: <b>708</b> MQL</span>
+    <span>Aproveitamento <b>13,7%</b> · parado desde abril</span>
+    <span>Queda de junho é oscilação, <b>não</b> ganho de qualidade</span>
+    <span><b>85%</b> do MQL em 3 marcas</span>
+  </div>
+</div>
+
+<nav class="tabs" id="tabs" aria-label="Seções do programa"></nav>
+
+<div class="wrap" id="panels"></div>
+
+<script>
+/* ---------------- dados ---------------- */
+const AMBER = txt => `<span class="flag">${txt}</span>`;
+
+const overview = {
+  id:'geral', label:'Visão geral',
+  render(){
+    return `
+    <h2>Diagnóstico e ondas</h2>
+    <p class="tagline">O que os dados do RD sustentam, e a ordem de execução.</p>
+
+    <div class="call">
+      <div class="ct">O que o RD mostra (extraído em 10/07/2026)</div>
+      <p>A qualidade subiu de março (11,1%) para abril (14,0%) e estacionou. Junho caiu 11% em volume contra maio, com a taxa de aproveitamento inalterada. Se a queda fosse ganho de qualidade, a taxa teria subido. Não subiu.</p>
+      <p>Consequência: o programa se justifica como ativo de médio prazo, não como resposta a uma tendência que os dados não confirmam.</p>
+    </div>
+
+    <div class="lab">Ordem das ondas</div>
+    <table class="waves">
+      <thead><tr><th>Onda</th><th>Calibragem</th><th>Impacto</th><th>Período</th></tr></thead>
+      <tbody>
+        <tr><td>Onda 1</td><td class="cal">InPot · 115 MQL</td><td class="imp">Lisô Laser · 20 MQL</td><td>Sem. 1–4</td></tr>
+        <tr><td>Onda 2</td><td class="cal">Eletrovias · 248 MQL</td><td class="imp">Oral Unic · 53 MQL</td><td>Sem. 5–8</td></tr>
+        <tr><td>Onda 3</td><td class="cal">B2Case · 243 MQL</td><td class="imp">Viva · 29 MQL</td><td>Sem. 9–12</td></tr>
+        <tr><td>Paralela</td><td class="cal">Odonto Scale</td><td class="imp">Scale Partner</td><td>A partir da sem. 3</td></tr>
+      </tbody>
+    </table>
+    <p class="p" style="color:var(--muted)">Cada onda combina uma marca de alto volume, que calibra a mecânica, com uma de baixo volume, onde o resultado altera decisão. A mecânica transfere entre marcas. O conteúdo não.</p>
+
+    <div class="lab" style="margin-top:22px">Distribuição do MQL — junho</div>
+    <table class="waves">
+      <thead><tr><th>Marca</th><th>MQL</th><th>Aproveitamento</th><th>Participação</th></tr></thead>
+      <tbody>
+        <tr><td>Eletrovias</td><td>248</td><td>17,7%</td><td>35%</td></tr>
+        <tr><td>B2Case</td><td>243</td><td>10,3%</td><td>34%</td></tr>
+        <tr><td>InPot</td><td>115</td><td>17,4%</td><td>16%</td></tr>
+        <tr><td>Oral Unic</td><td>53</td><td>3,8%</td><td>7%</td></tr>
+        <tr><td>Viva</td><td>29</td><td>${AMBER('a validar')}</td><td>4%</td></tr>
+        <tr><td>Lisô Laser</td><td>20</td><td>${AMBER('a validar')}</td><td>3%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="call amber" style="margin-top:20px">
+      <div class="ct">Pré-requisitos que travam a Onda 1</div>
+      <p>1. Separar o campo <b>empresa</b> (marca de interesse) da <b>UTM</b> (origem) no RD. Há deals com empresa B2Case e qualificação inteira sobre Eletrovias. · Gabriel</p>
+      <p>2. Criar o estágio <b>Lead Isca</b>, o campo de score e a regra de promoção a MQL. · Gabriel</p>
+      <p>3. Custom conversions <b>Isca_[Marca]_Download</b> isoladas no Meta. · Marina</p>
+      <p>4. Validar pisos de capital, pesos do score e o corte de 70. · Bia com Expansão</p>
+      <p>5. Conectar a agenda do avaliador com a pergunta de compromisso obrigatória. · Gabriel</p>
+    </div>`;
+  }
+};
+
+const scoreModel = {
+  id:'score', label:'Modelo de score',
+  render(){
+    const w = [
+      ['Capital declarado',40],['Requisito estrutural',25],['Praça',15],['Prazo de abertura',10],['Engajamento',10]
+    ];
+    return `
+    <h2>Score, autoagendamento e no-show</h2>
+    <p class="tagline">O score decide quem abre a agenda sozinho, quem vai ao SDR e quem fica em nutrição.</p>
+
+    <div class="lab">Três ramos de tratamento</div>
+    <div class="gate">
+      <div class="gate-zone z1"><div class="gate-score">70–100</div>
+        <div class="gate-txt"><div class="gt">Agenda direta</div><div class="gd">Recebe o link da agenda do avaliador no e-mail de entrega. Não passa pelo SDR. Sai da nutrição ao agendar.</div></div></div>
+      <div class="gate-zone z2"><div class="gate-score">40–69</div>
+        <div class="gate-txt"><div class="gt">Nutrição com CTA duplo → SDR</div><div class="gd">Entra no trilho. Cada e-mail carrega conteúdo e agenda. Ao cruzar 70, o próximo e-mail troca o CTA de conteúdo pela agenda. Se percorre o trilho sem cruzar, vai ao SDR com o raio-X anexado.</div></div></div>
+      <div class="gate-zone z3"><div class="gate-score">0–39</div>
+        <div class="gate-txt"><div class="gt">Nutrição reduzida</div><div class="gd">Três e-mails e migra para a newsletter. Não vai para o SDR. Reentra se atualizar capital ou requisito estrutural.</div></div></div>
+    </div>
+
+    <div class="lab">Composição dos 100 pontos</div>
+    <div class="weights">
+      ${w.map(([n,v])=>`<div class="wrow"><div class="wn">${n}</div><div class="wbar"><i data-w="${v}"></i></div><div class="wv">${v}</div></div>`).join('')}
+    </div>
+    <p class="p" style="color:var(--muted)">As três perguntas obrigatórias de todo formulário — capital em faixas, praça e prazo — já entregam 65 dos 100 pontos na submissão.</p>
+
+    <div class="call amber">
+      <div class="ct">Os pesos são calibração inicial, não regressão</div>
+      <p>Derivados dos campos que o comercial já usa. Revisão obrigatória em 60 dias contra taxa de comparecimento e taxa de avanço por faixa. Validar com Expansão antes da Onda 1.</p>
+    </div>
+
+    <div class="call">
+      <div class="ct">Contenção de no-show do autoagendamento</div>
+      <p>Pergunta de compromisso no ato do agendamento, gravada no RD e entregue ao avaliador. Confirmação em dois toques: e-mail imediato e WhatsApp 24h antes. Reagendamento único.</p>
+      <p>Correção automática: se o comparecimento do autoagendamento ficar abaixo do SDR por 3 semanas seguidas, o corte de liberação sobe de 70 para 80.</p>
+    </div>`;
+  }
+};
+
+const brands = [
+  {
+    id:'inpot', label:'InPot',
+    tag:'Fresh Food Shop · Onda 1 · calibragem',
+    badges:[['MQL','115'],['Aprov.','17,4%'],['Onda','1'],['Papel','Ímã','role hot']],
+    isca:'Simulador de Praça',
+    iscaP:'O lead informa CEP, tipo de ponto, fluxo e concorrência; a ferramenta projeta a faixa de faturamento e o mix salão/delivery, e diz se o ponto fica abaixo do perfil da rede.',
+    capture:'Captura: praça + capital + prazo',
+    variants:[
+      ['Comparador de modelos','loja de rua, quiosque ou delivery — fricção baixa, controle'],
+      ['Calculadora de Desperdício Zero','quebra da rede &lt;2% vs 10–15% do mercado — '+AMBER('valida os dois números')],
+      ['Planilha de capital de giro','fricção alta, sinal de intenção']
+    ],
+    piso:'R$ 150.000', trilho:'B',
+    mails:[
+      ['D2','Dossiê Fast Casual Saudável','Prova de mudança permanente de consumo · '+AMBER('validar pesquisas')],
+      ['D5','Estudo de redução de encargos via totens','Economia de headcount na conta unitária'],
+      ['D8','Infográfico de supply chain centralizado','Mata a objeção de quebra · conecta à isca'],
+      ['D12','Dossiê de adaptação sazonal de inverno','Remove o medo da queda de salada no frio, antes do CTA']
+    ]
+  },
+  {
+    id:'liso', label:'Lisô Laser',
+    tag:'Depilação a laser · Onda 1 · impacto',
+    badges:[['MQL','20'],['Aprov.','a validar','warn'],['Onda','1'],['Papel','Ímã + filtro','role hot']],
+    isca:'Diagnóstico de Praça: quantas sessões a cidade absorve',
+    iscaP:'Calcula a população-alvo do município, aplica a penetração de 5% do Brasil e a de 25% da Europa, e mostra o espaço de mercado não atendido.',
+    capture:'Captura: capital + município + experiência',
+    variants:[
+      ['Quiz de Saturação','"minha cidade já tem muitas clínicas?" — responde a objeção nº1 na isca'],
+      ['Quiz de perfil investidor','separa operador de multiunidade antes da conversa']
+    ],
+    note:['Duas variantes em formato quiz medem coisas diferentes, mas o formato repetido cansa. Se a conclusão cair na 2ª semana, fundir num quiz só.'],
+    piso:'R$ 150.000', trilho:'A',
+    mails:[
+      ['D2','Dossiê de expansão do público masculino','Amplia o mercado, público de alto ticket · '+AMBER('validar dados')],
+      ['D5','Infográfico da Máquina de Geração de Demanda','Responde "a agenda vai encher" · '+AMBER('só sobe se a franqueadora roda isso')],
+      ['D9','Guia comparativo de tecnologias de laser','Diferencia a tecnologia e sustenta o ticket premium'],
+      ['D13','Vídeo-case de rápida escala operacional','Prova social · '+AMBER('validar 1.500 pacotes no 1º ano')]
+    ]
+  },
+  {
+    id:'eletrovias', label:'Eletrovias',
+    tag:'Mobilidade elétrica · Onda 2 · calibragem',
+    badges:[['MQL','248'],['Aprov.','17,7%'],['Onda','2'],['Papel','Ímã','role hot']],
+    isca:'Mapa de Recarga: quantos carros disputam um ponto na cidade',
+    iscaP:'Mostra a frota eletrificada e os pontos públicos do município, classifica como subatendido, atendido ou saturado, e devolve o modelo compatível com o capital.',
+    capture:'Captura: capital + município + ponto próprio',
+    variants:[
+      ['Calculadora de Valorização Imobiliária','novo ICP: dono de estacionamento/imóvel · conjunto próprio · '+AMBER('validar valorização')],
+      ['Checklist de Viabilidade Elétrica (KVA)','campo de alta fricção: transformador, demanda com a concessionária'],
+      ['Calculadora de receita do eletroponto','forte no perfil de renda passiva'],
+      ['Quiz de perfil investidor','separa renda passiva de operação']
+    ],
+    note:['A seed de lookalike é só quem baixou <b>e</b> declarou capital acima do piso. Nenhum lookalike sobe antes de 500 pessoas. Só a Eletrovias chega a essa massa em 60 dias.'],
+    piso:'R$ 60.000', trilho:'A (eletroposto) · B (eletroponto/vaga)',
+    mails:[
+      ['D2','Dossiê de frota eletrificada','Timing com emplacamentos e déficit de pontos · '+AMBER('validar fonte')],
+      ['D5','Estudo posto de combustível vs eletroposto','Diferencia operação, risco e custo trabalhista'],
+      ['D9','Guia de autossuficiência fotovoltaica','Alavanca de margem sobre o kWh (carports)'],
+      ['D13','Vídeo-case de monetização de espaço ocioso','Área morta em receita recorrente']
+    ]
+  },
+  {
+    id:'oralunic', label:'Oral Unic',
+    tag:'Odontologia · Onda 2 · impacto',
+    badges:[['MQL','53'],['Aprov.','3,8%','warn'],['Onda','2'],['Papel','Filtro','role']],
+    isca:'Teste de Elegibilidade + Simulador dos 3 modelos',
+    iscaP:'Oito perguntas com três saídas: elegível (indica Slim, Smart ou Platinum e libera agenda), sem sócio dentista (guia de sociedade e nutrição), ou sem capital (sugere outra marca do portfólio).',
+    capture:'Captura: acesso a sócio dentista avaliador',
+    variants:[
+      ['Estudo: por que 80% abrem a 2ª unidade','autoridade, dirigido ao dentista dono de clínica']
+    ],
+    note:['Esta isca reduz volume de propósito. Devolver "você não é elegível hoje" produz menos leads, e é o resultado desejado: 51 dos 53 MQL de junho gastaram SDR sem gerar reunião. Métrica = custo por diagnóstico, nunca custo por lead.'],
+    piso:'R$ 300.000 · e sócio dentista', trilho:'A',
+    gap:'Sem ativo de segmento no dossiê. Usa conteúdo próprio — Guia de COF no D13, Estudo dos 80% — mais a biblioteca geral (valuation, painel, logístico) nos slots livres.'
+  },
+  {
+    id:'b2case', label:'B2Case',
+    tag:'Microfranquia vending tech · Onda 3 · calibragem',
+    badges:[['MQL','243'],['Aprov.','10,3%','warn'],['Onda','3'],['Papel','Filtro','role']],
+    isca:'Teste do Ponto',
+    iscaP:'O lead descreve a categoria do ponto e o fluxo; a ferramenta estima cases por dia e compara com o equilíbrio de 3 cases/dia. Se não sustenta, diz na primeira linha.',
+    capture:'Captura: categoria e fluxo do ponto',
+    variants:[
+      ['Planilha de payback de vending','24 meses, fricção alta — filtra melhor que quiz'],
+      ['Checklist de viabilidade de ponto','campo: fluxo, concorrência, autorização do local']
+    ],
+    note:['Contaminação de atribuição: deals com empresa B2Case e qualificação sobre Eletrovias. '+AMBER('Corrigir empresa vs UTM antes da Onda 3.')+' · Gabriel'],
+    piso:'R$ 60.000', trilho:'B',
+    gap:'Sem ativo de segmento no dossiê. Usa a biblioteca geral e precisa de conteúdo próprio de vending (uptime de máquina, controle de estoque) para os e-mails de objeção. Criar com o time B2Case.'
+  },
+  {
+    id:'viva', label:'Viva',
+    tag:'ILPI Premium · Onda 3 · impacto',
+    badges:[['MQL','29'],['Aprov.','a validar','warn'],['Onda','3'],['Papel','Filtro alto','role']],
+    isca:'Estudo Demográfico Municipal',
+    iscaP:'Projeção da população acima de 60 anos, oferta de leitos do município e déficit contra a média nacional, fechando com o modelo econômico da unidade.',
+    capture:'Captura: capital + imóvel + município',
+    variants:[
+      ['Modelo de DRE com 28 leitos','fricção máxima; o download é o próprio sinal de intenção'],
+      ['Tour Virtual 360º da unidade modelo','remove a incerteza de um capex de R$900k antes da conversa']
+    ],
+    note:['Ponte com o Scale Partner: lead com capital acima de R$500k vira pool de curadoria do evento. A isca pode converter em ingresso de R$1.800 revertido em crédito, não só em franquia.'],
+    piso:'R$ 500.000', trilho:'A',
+    mails:[
+      ['D2','Dossiê da Economia Prateada (IBGE)','Credibilidade macro · '+AMBER('validar recorte/ano')],
+      ['D5','Estudo de yield: imobiliário vs senior living','Autosseleção por capital com comparação de retorno'],
+      ['D13','Vídeo-case de blindagem de riscos e protocolos','Remove o medo de ANVISA e intercorrência'],
+      ['D17','Manual de posicionamento contra estigmas','Reposiciona de asilo para hotel sênior']
+    ]
+  },
+  {
+    id:'odonto', label:'Odonto Scale',
+    tag:'Mentoria para donos de clínica · paralela',
+    badges:[['Funil','próprio'],['Status','em construção'],['Papel','Diagnóstico','role hot']],
+    isca:'Raio-X de Lucratividade da Clínica',
+    iscaP:'18 perguntas em quatro blocos (receita, ocupação, custo, gestão). Devolve score por bloco, os três gargalos de maior impacto e a receita não capturada em cada um. Entrega o diagnóstico, não o plano.',
+    capture:'Captura: faturamento, cadeiras, decisor',
+    variants:[
+      ['Calculadora de receita perdida por falta','choque curto, alta conclusão, topo para o Raio-X'],
+      ['Minicurso de 4 dias por WhatsApp','os quatro gargalos de margem; cada lição grava um campo']
+    ],
+    note:['Sinergia direta com a Oral Unic: a Odonto Scale captura o dono de clínica dentista, que é exatamente o sócio avaliador que trava a Oral Unic em 3,8%. Ponte só com aceite explícito no RD.'],
+    piso:'Faturamento > R$ 80k e 2+ cadeiras', trilho:'C',
+    gap:'Não é franquia. O conteúdo de como comprar franquia não se aplica. O Trilho C permanece com o fluxo de diagnóstico da clínica.'
+  },
+  {
+    id:'scale', label:'Scale Partner',
+    tag:'Porta de entrada do portfólio · paralela',
+    badges:[['Nível','portfólio'],['Onda','paralela'],['Papel','Roteia + cura','role hot']],
+    isca:'Quiz de Roteamento de Perfil',
+    iscaP:'Dez perguntas cruzam capital, envolvimento, setor e região com a matriz do portfólio e recomendam a marca ou o modelo Scale Up. Encaminha para a isca da marca com o score já pré-preenchido.',
+    capture:'Captura: qual marca, para o lead indeciso',
+    variants:[
+      ['Minicurso "comprar uma franquia sem errar"','4 dias: os 5 números, auditar a rede, operar vs investir, qual setor protege capital']
+    ],
+    note:['O minicurso ensina o lead a auditar redes. Regra: nenhuma marca cujo número real não passe no checklist dos Dias 1 e 2 entra na recomendação do Dia 4.','Leads acima do âncora do evento entram na fila de curadoria do Scale Partner, em paralelo ao roteamento.'],
+    piso:'Herda o piso da marca de destino', trilho:'Minicurso (4d) → trilho da marca'
+  }
+];
+
+/* ---------------- render ---------------- */
+function brandPanel(b){
+  const badges = b.badges.map(([k,v,cls])=>`<div class="badge ${cls||''}"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+  const variants = b.variants ? `
+    <div class="block">
+      <div class="lab">Iscas variantes</div>
+      <ul class="clean">${b.variants.map(([t,d])=>`<li><b>${t}.</b> <span class="desc">${d}</span></li>`).join('')}</ul>
+    </div>` : '';
+  const notes = b.note ? b.note.map(n=>`<div class="call"><p>${n}</p></div>`).join('') : '';
+  const gap = b.gap ? `<div class="call amber"><div class="ct">Sem cobertura no dossiê</div><p>${b.gap}</p></div>` : '';
+  const mails = b.mails ? `
+    <div class="block">
+      <div class="lab">Conteúdo por e-mail — Trilho ${b.trilho}</div>
+      <div class="mail">
+        ${b.mails.map(([d,a,f])=>`<div class="mail-row"><div class="mail-day">${d}</div><div class="mail-body"><div class="asset">${a}</div><div class="fn">${f}</div></div></div>`).join('')}
+      </div>
+    </div>` : '';
+
+  return `
+    <h2>${b.label}</h2>
+    <p class="tagline">${b.tag}</p>
+    <div class="badges">${badges}</div>
+
+    <div class="block">
+      <div class="lab">Isca principal</div>
+      <div class="isca-name">${b.isca}</div>
+      <p class="p">${b.iscaP}</p>
+      <span class="capture">${b.capture}</span>
+    </div>
+
+    ${variants}
+
+    <div class="block">
+      <div class="grid2">
+        <div class="badge" style="min-width:0"><span class="k">Piso de qualificação</span><span class="v" style="font-family:var(--sans);font-size:14px">${b.piso}</span></div>
+        <div class="badge" style="min-width:0"><span class="k">Trilho de nutrição</span><span class="v" style="font-family:var(--sans);font-size:14px">${b.trilho}</span></div>
+      </div>
+    </div>
+
+    ${mails}
+    ${notes}
+    ${gap}
+  `;
+}
+
+const sections = [overview, scoreModel, ...brands];
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('panels');
+
+const tabsInner = document.createElement('div');
+tabsInner.className = 'tabs-inner';
+tabsEl.appendChild(tabsInner);
+
+sections.forEach((s,i)=>{
+  const btn = document.createElement('button');
+  btn.className='tab';
+  btn.setAttribute('role','tab');
+  btn.setAttribute('aria-selected', i===0?'true':'false');
+  btn.dataset.id = s.id;
+  btn.innerHTML = s.label + (i>1 ? '' : '');
+  btn.onclick = ()=>select(s.id);
+  tabsInner.appendChild(btn);
+
+  const p = document.createElement('section');
+  p.className='panel'+(i===0?' on':'');
+  p.id='p-'+s.id;
+  p.innerHTML = s.render ? s.render() : brandPanel(s);
+  panelsEl.appendChild(p);
+});
+
+// footer legend, appended once
+const foot = document.createElement('footer');
+foot.innerHTML = `
+  <b>Como ler:</b> a função da isca é pré-qualificar e reduzir atrito, não capturar e-mail.
+  <div class="legend">
+    <span><span class="dot" style="background:var(--teal)"></span> sinal ativo / captura</span>
+    <span><span class="dot" style="background:var(--med)"></span> estrutura</span>
+    <span><span class="dot" style="background:var(--amber)"></span> por validar ou estimativa</span>
+  </div>
+  <p style="margin-top:12px">Painel gerado a partir do documento Iscas por Marca e Fluxo de Nutrição v4. Dados do RD Station em 10/07/2026.</p>`;
+panelsEl.appendChild(foot);
+
+function select(id){
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.dataset.id===id?'true':'false'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on', p.id==='p-'+id));
+  if(id==='score') animateWeights();
+  window.scrollTo({top:0,behavior:'smooth'});
+  const active = document.querySelector('.tab[aria-selected="true"]');
+  if(active) active.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+}
+
+// Deep-link to a single brand panel (used when embedded per marca).
+(function(){
+  const params = new URLSearchParams(location.search);
+  const only = params.get('tab');
+  if(!only) return;
+  const target = document.getElementById('p-'+only);
+  if(!target) return;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on', p.id==='p-'+only));
+  const nav = document.querySelector('nav.tabs');
+  if(nav) nav.style.display = 'none';
+  const diag = document.querySelector('.diag');
+  if(diag) diag.style.display = 'none';
+  const head = document.querySelector('header .head-inner');
+  if(head){
+    const h1 = head.querySelector('h1');
+    const sub = h1?.querySelector('.sub');
+    if(sub) sub.textContent = 'Programa de Iscas B2B';
+  }
+})();
+
+function animateWeights(){
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('#p-score .wbar i').forEach(bar=>{
+      bar.style.width = bar.dataset.w+'%';
+    });
+  });
+}
+</script>
