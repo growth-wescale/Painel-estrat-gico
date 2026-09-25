@@ -25,18 +25,39 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+const TITLES = {
+  signin: "Entrar no painel",
+  signup: "Criar conta",
+  forgot: "Redefinir senha",
+  reset: "Definir nova senha",
+} as const;
+
+const SUBMIT_LABELS = {
+  signin: "Entrar",
+  signup: "Criar conta",
+  forgot: "Enviar link de redefinição",
+  reset: "Salvar nova senha",
+} as const;
+
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot" | "reset">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/", replace: true });
+    // O link de redefinição de senha abre /auth?mode=reset já com sessão de recuperação.
+    const isReset = new URLSearchParams(window.location.search).get("mode") === "reset";
+    if (isReset) setMode("reset");
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") setMode("reset");
     });
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session && !isReset) navigate({ to: "/", replace: true });
+    });
+    return () => sub.subscription.unsubscribe();
   }, [navigate]);
 
   const ALLOWED = ["@oralunic.com.br", "@wescale.com.br", "@lisolaser.com.br"];
@@ -47,8 +68,22 @@ function AuthPage() {
     setLoading(true);
     setMessage(null);
     try {
+      if (mode === "reset") {
+        const { error } = await supabase.auth.updateUser({ password });
+        if (error) throw error;
+        navigate({ to: "/", replace: true });
+        return;
+      }
       if (!isAllowed(email)) {
         throw new Error("Acesso restrito aos domínios @oralunic.com.br, @wescale.com.br e @lisolaser.com.br.");
+      }
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/auth?mode=reset`,
+        });
+        if (error) throw error;
+        setMessage("Se o e-mail tiver conta, você vai receber um link para definir uma nova senha.");
+        return;
       }
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
@@ -76,13 +111,14 @@ function AuthPage() {
     <main className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-sm">
         <h1 className="text-xl font-semibold text-foreground">
-          {mode === "signin" ? "Entrar no painel" : "Criar conta"}
+          {TITLES[mode]}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Acesso restrito a e-mails @oralunic.com.br, @wescale.com.br e @lisolaser.com.br.
         </p>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
+          {mode !== "reset" && (
           <div className="space-y-2">
             <Label htmlFor="email">E-mail</Label>
             <Input
@@ -94,8 +130,10 @@ function AuthPage() {
               autoComplete="email"
             />
           </div>
+          )}
+          {mode !== "forgot" && (
           <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
+            <Label htmlFor="password">{mode === "reset" ? "Nova senha" : "Senha"}</Label>
             <Input
               id="password"
               type="password"
@@ -106,23 +144,40 @@ function AuthPage() {
               autoComplete={mode === "signin" ? "current-password" : "new-password"}
             />
           </div>
+          )}
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Aguarde..." : mode === "signin" ? "Entrar" : "Criar conta"}
+            {loading ? "Aguarde..." : SUBMIT_LABELS[mode]}
           </Button>
         </form>
 
         {message && <p className="mt-4 text-sm text-muted-foreground">{message}</p>}
 
-        <button
-          type="button"
-          className="mt-4 text-sm text-muted-foreground underline"
-          onClick={() => {
-            setMode(mode === "signin" ? "signup" : "signin");
-            setMessage(null);
-          }}
-        >
-          {mode === "signin" ? "Não tenho conta" : "Já tenho conta"}
-        </button>
+        {mode !== "reset" && (
+          <div className="mt-4 flex flex-col items-start gap-2">
+            <button
+              type="button"
+              className="text-sm text-muted-foreground underline"
+              onClick={() => {
+                setMode(mode === "signin" ? "signup" : "signin");
+                setMessage(null);
+              }}
+            >
+              {mode === "signin" ? "Não tenho conta" : "Já tenho conta"}
+            </button>
+            {mode === "signin" && (
+              <button
+                type="button"
+                className="text-sm text-muted-foreground underline"
+                onClick={() => {
+                  setMode("forgot");
+                  setMessage(null);
+                }}
+              >
+                Esqueci minha senha
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="mt-6 border-t border-border pt-4">
           <a href="/" className="text-sm text-muted-foreground underline">
