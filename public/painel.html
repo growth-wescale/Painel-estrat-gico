@@ -214,6 +214,30 @@ ul.clean.p li::before{background:var(--purple-m)}
 .empty .sm{font-size:13px;max-width:52ch;margin:0 auto}
 
 .view{display:none}.view.on{display:block}
+/* ---------- HOME ---------- */
+.homegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:-34px auto 0;position:relative;z-index:5;max-width:1200px;padding:0 32px}
+.homegrid a.bcard{text-decoration:none;color:inherit}
+.bcard .go{font-family:'Space Mono';font-size:12px;color:var(--teal-d);font-weight:700}
+.bcard.themed .go{color:#fff}
+.homesec{max-width:1200px;margin:44px auto 60px;padding:0 32px}
+.homesec h2{font-size:22px;margin-bottom:6px}
+.homesec .sub{font-size:14px;color:var(--body);margin-bottom:18px}
+.toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.tool{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px 18px;text-decoration:none;color:var(--ink);font-family:'Space Grotesk';font-weight:600;font-size:15px;transition:.15s}
+.tool:hover{border-color:var(--teal);background:var(--tealwash)}
+.tool span{font-family:'Space Mono';font-size:12px;color:var(--teal-d)}
+.tool.off{opacity:.55;cursor:not-allowed}
+.tool.off:hover{border-color:var(--line);background:var(--white)}
+.tool.off span{color:var(--body)}
+.soongrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.soon{background:var(--white);border:1px dashed var(--line);border-radius:18px;padding:22px}
+.soon h3{font-size:20px;margin:8px 0 6px}
+.soon p{font-size:13.5px;color:var(--body);margin:0}
+@media(max-width:900px){
+  .homegrid,.soongrid{grid-template-columns:1fr}
+  .toolgrid{grid-template-columns:1fr 1fr}
+  .homegrid,.homesec{padding:0 16px}
+}
 footer{border-top:1px solid var(--line);padding:20px 0;font-family:'Space Mono';font-size:11px;color:#8a7d87}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
 
@@ -656,9 +680,9 @@ details.acc .accb .tag-flow{font-family:'Space Mono';font-size:11px;color:var(--
 <body>
 
 <div class="topbar"><div class="wrap">
-  <div class="logo" onclick="goHub()">WE<span>SCALE</span></div>
-  <div class="crumb" id="crumb">Painel de Estratégias</div>
-  <div class="back hide" id="backbtn" onclick="goHub()">← Todas as marcas</div>
+  <div class="logo" onclick="goHome()">WE<span>SCALE</span></div>
+  <div class="crumb" id="crumb">Painel WeScale</div>
+  <div class="back hide" id="backbtn" onclick="goBack()">← Início</div>
   <div class="searchbox">
     <input id="globalSearch" type="search" placeholder="Buscar conteúdos" autocomplete="off" />
     <div class="search-results" id="searchResults"></div>
@@ -735,14 +759,48 @@ details.acc .accb .tag-flow{font-family:'Space Mono';font-size:11px;color:var(--
 })();
 </script>
 
-<!-- ============ HUB ============ -->
-<div class="view on" id="hub">
+<!-- ============ HOME ============ -->
+<div class="view on" id="home">
   <div class="hero"><div class="grid-tex"></div><div class="wrap">
-    <div class="eyebrow">Portfólio B2B · S2 2026</div>
+    <div class="eyebrow">Painel WeScale</div>
+    <h1>Tudo o que o time usa, em um só lugar</h1>
+    <p class="lede">Onboarding reúne as marcas, os playbooks e as aulas. Dashboard abre os números de performance. Acessos leva direto às ferramentas do dia a dia.</p>
+  </div></div>
+  <div class="homegrid" role="list" aria-label="Áreas do painel">
+    <div class="bcard themed t-wescale" role="listitem" tabindex="0" onclick="goHub()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHub()}">
+      <div class="top"><span class="seg">Área</span></div>
+      <h3>Onboarding</h3>
+      <p class="oneliner">Estratégia de cada marca, playbooks e aulas.</p>
+      <div class="foot"><span class="go">Abrir →</span></div>
+    </div>
+    <a class="bcard" role="listitem" href="https://dashboard.srv1816822.hstgr.cloud/" target="_blank" rel="noopener noreferrer">
+      <div class="top"><span class="seg">Link externo</span></div>
+      <h3>Dashboard</h3>
+      <p class="oneliner">Números de performance das marcas.</p>
+      <div class="foot"><span class="go">Abrir em nova aba ↗</span></div>
+    </a>
+  </div>
+  <section class="homesec" aria-labelledby="acessosTitle">
+    <h2 id="acessosTitle">Acessos</h2>
+    <p class="sub">Ferramentas do time. Cada botão abre em uma nova aba.</p>
+    <div class="toolgrid" id="toolgrid"></div>
+  </section>
+</div>
+
+<!-- ============ HUB (Onboarding) ============ -->
+<div class="view" id="hub">
+  <div class="hero"><div class="grid-tex"></div><div class="wrap">
+    <div class="eyebrow">Onboarding · S2 2026</div>
     <h1>Estratégia de cada marca, em um só lugar</h1>
     <p class="lede">Clique em uma marca para abrir mídia paga, aquisição, vendas, eventos, conteúdo e metas. A barra de maturidade indica quanto da estratégia já está documentada com fonte. Blocos marcados como a documentar são backlog, não conteúdo aprovado.</p>
   </div></div>
   <div class="brandgrid" id="cards" role="list" aria-label="Marcas"></div>
+  <section class="homesec" aria-label="Playbooks e aulas">
+    <div class="soongrid">
+      <div class="soon"><div class="eyebrow-s">Em construção</div><h3>Playbooks</h3><p>Conteúdo ainda não cadastrado.</p></div>
+      <div class="soon"><div class="eyebrow-s">Em construção</div><h3>Aulas</h3><p>Conteúdo ainda não cadastrado.</p></div>
+    </div>
+  </section>
 </div>
 
 <!-- ============ BRAND ============ -->
@@ -1257,7 +1315,8 @@ function applyRoute(brand, cat){
   __applyingRoute = true;
   try{
     __lastNav = { brand: brand||null, cat: cat||null };
-    if(!brand){ if(current) goHub(); return; }
+    if(!brand){ goHome(); return; }
+    if(brand===ONBOARDING_SLUG){ goHub(); return; }
     const b = (window.MODEL||[]).find(x=>x.id===brand); if(!b) return;
     let idx = 0;
     if(cat){
@@ -1281,10 +1340,9 @@ function openBrand(id, initialCat=0){
     return;
   }
   current=b;
-  document.getElementById('hub').classList.remove('on');
-  document.getElementById('brand').classList.add('on');
-  document.getElementById('backbtn').classList.remove('hide');
-  document.getElementById('crumb').innerHTML=`Estratégias · <b>${b.nome}</b>`;
+  showView('brand');
+  setBack('← Onboarding');
+  document.getElementById('crumb').innerHTML=`Onboarding · <b>${b.nome}</b>`;
   document.getElementById('brandhero').className='brandhero'+(b.theme==='teal'?' teal':'');
   document.getElementById('b-eyebrow').textContent=b.seg+' · '+b.prot;
   document.getElementById('b-title').textContent=b.nome;
@@ -1301,13 +1359,49 @@ function openBrand(id, initialCat=0){
   requestAnimationFrame(()=>showCat(firstCat));
   window.scrollTo(0,0);
 }
-function goHub(){
-  document.getElementById('brand').classList.remove('on');
-  document.getElementById('hub').classList.add('on');
-  document.getElementById('backbtn').classList.add('hide');
-  document.getElementById('crumb').textContent='Painel de Estratégias';
+/* ---- Início: áreas e acessos ---- */
+const ONBOARDING_SLUG='onboarding';
+// url:null = link ainda não informado; o botão aparece desabilitado.
+const TOOLS=[
+  { nome:'Drive', url:'https://drive.google.com/' },
+  { nome:'Bate ponto', url:null },
+  { nome:'Extranet', url:null },
+  { nome:'ReamGuide', url:null },
+  { nome:'Figma', url:'https://www.figma.com/' },
+  { nome:'Freepik Spaces', url:null },
+  { nome:'CapCut', url:'https://www.capcut.com/' },
+];
+function renderTools(){
+  const el=document.getElementById('toolgrid'); if(!el) return;
+  el.innerHTML=TOOLS.map(t=>t.url
+    ? `<a class="tool" href="${escapeHtml(t.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t.nome)}<span>↗</span></a>`
+    : `<div class="tool off" aria-disabled="true" title="Link ainda não configurado">${escapeHtml(t.nome)}<span>link a definir</span></div>`
+  ).join('');
+}
+renderTools();
+function showView(id){
+  ['home','hub','brand'].forEach(v=>document.getElementById(v).classList.toggle('on', v===id));
+}
+function setBack(label){
+  const btn=document.getElementById('backbtn');
+  if(label){ btn.textContent=label; btn.classList.remove('hide'); }
+  else btn.classList.add('hide');
+}
+function goBack(){ if(current) goHub(); else goHome(); }
+function goHome(){
+  showView('home');
+  setBack(null);
+  document.getElementById('crumb').textContent='Painel WeScale';
   current=null;
   syncUrl(null,null);
+  window.scrollTo(0,0);
+}
+function goHub(){
+  showView('hub');
+  setBack('← Início');
+  document.getElementById('crumb').innerHTML='Painel WeScale · <b>Onboarding</b>';
+  current=null;
+  syncUrl(ONBOARDING_SLUG,null);
   window.scrollTo(0,0);
 }
 
